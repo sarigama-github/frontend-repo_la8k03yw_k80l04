@@ -1,25 +1,39 @@
 import { useState } from 'react'
+import Header from './components/Header'
+import Sidebar from './components/Sidebar'
+import { AssistantSection, CasesSection, TasksSection, ClientsSection, BillingSection, SettingsSection } from './components/Sections'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [active, setActive] = useState('assistant')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const renderSection = () => {
+    switch (active) {
+      case 'assistant':
+        return <AssistantSection />
+      case 'cases':
+        return <CasesSection />
+      case 'tasks':
+        return <TasksSection />
+      case 'clients':
+        return <ClientsSection />
+      case 'billing':
+        return <BillingSection />
+      case 'settings':
+        return <SettingsSection />
+      default:
+        return <div className="bg-white border rounded-lg p-5">Coming soon...</div>
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <Header onToggleSidebar={() => setSidebarOpen(v => !v)} />
+      <div className="flex">
+        <Sidebar active={active} setActive={setActive} open={sidebarOpen} />
+        <main className="flex-1 p-4 lg:p-6 space-y-4 lg:ml-0 ml-72">
+          {renderSection()}
+        </main>
       </div>
     </div>
   )
